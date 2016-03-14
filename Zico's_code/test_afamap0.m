@@ -1,3 +1,7 @@
+% T num timesteps
+
+
+
 function [map_se, afa_se, afand_se, afana_se, vmf_se, prior_se, zero_se] = ...
       test_afamap0(T, n, k, p, seed);
 
