@@ -1,3 +1,20 @@
+% Input
+% T - num timesteps
+% n - number of 
+% k - number of 
+% p - number of 
+% seed-  random seed for same result testing
+% random_walk - I think this is a noise inducing thing. It is used to take
+% a 'random walk' over the cumulative sum
+
+% Output
+% map_se - Squared error of map approach (this is 0, kinda pointless for testing approximations)
+% afa_se - Squared error of afa approx (The second best approx in this test)
+% afand_se - Squared err using the additive signal (the best approx in this test)
+% afana_se - Squared error using the difference signal (worst of the afa approaches)
+% I have no idea what methods prior_se, vmf_se, and zero_se try to evaluate
+% but they suck (very high error) so lets ignore them
+
 function [map_se, afa_se, maptv_se, afatv_se, prior_se, zero_se] = ...
       test_afamap1(T, n, k, p, seed, random_walk);
 
