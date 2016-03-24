@@ -11,7 +11,7 @@ state_time = [current_time];
 % TODO this should be preallocated
 
 for i = 2:length(time);
-    current_load = load(i)
+    current_load = load(i);
     prev_time = time(i-1);
     current_time = time(i);
     if (current_state == 0)
