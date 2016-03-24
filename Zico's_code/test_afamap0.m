@@ -64,6 +64,7 @@ params.dSig = 2*0.01*eye(n);
 params.Sig = 0.05*eye(n);
 X_afa = afamap(Y, mu, P, params);
 
+% by setting a param array to a high number, we ignore those variables.
 params.dSig = 100000*0.01*eye(n);
 params.Sig = 0.05*eye(n);
 X_afa_nodiff = afamap(Y, mu, P, params);
