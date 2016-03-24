@@ -16,7 +16,7 @@ for i = 1:length(data) - 1,
    end
 end
 
-pd = fitdist(smoothD,'Normal');
+pd = fitdist(smoothD','Normal');
 highThresh = pd.mu + pd.sigma;
 lowThresh = pd.mu - pd.sigma;
 
