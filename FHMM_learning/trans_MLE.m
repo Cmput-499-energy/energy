@@ -6,7 +6,7 @@ function [T_probs] = trans_MLE(no_chains, data, timePoints, states, contiguous_b
 	%	Filname: trans_MLE.m
 	%
 	% Description: This function estimates the transition probabilities of each of the chains of FHMM using maximum likelihood in a supervised fashion. 
-	%	       It also uses laplacian approximation to make sure that there are no zero probabilities. If you dont see a state in your data, it doesnt
+	%			   It also uses laplacian approximation to make sure that there are no zero probabilities. If you dont see a state in your data, it doesnt
 	%              mean that seeing that state in new data from the same distribution will have a zero probability.
 	%
 	% no_chains: number of chains of the FHMM. In our case it is the number of appliances
@@ -22,7 +22,7 @@ function [T_probs] = trans_MLE(no_chains, data, timePoints, states, contiguous_b
 	%                    [1,2,3], [5,6], [9,10] are the contiguous blocks as each of the time points are one after the another unlke 3,5 and 6,9.
 	%                    This needed as we may have timePoints with more than 1 contiguous blocks and our learning algorithm will treat the resulting
 	%                    extracted data_array as 1 contiguous block and that would be an error as then the model assumes that even timepoints say
-	%		     6,9 comes immediately one(9) after the other(6) which is not correct as the data was extracted with timepoints[...5,6,7,8,9,...].
+	%					 6,9 comes immediately one(9) after the other(6) which is not correct as the data was extracted with timepoints[...5,6,7,8,9,...].
 	%                    Thus our algorithm will assign our transition parameters wrong values.
 	%
 	% T_probs: a structure contain 'n' 'A' arrays where 'n'=no_chains and 'A' is the transition probability matrix.
