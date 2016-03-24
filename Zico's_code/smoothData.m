@@ -17,7 +17,16 @@ for i = 1:length(data) - 1,
 end
 
 pd = fitdist(smoothD','Normal');
-highThresh = pd.mu + pd.sigma;
-lowThresh = pd.mu - pd.sigma;
+lowThresh = pd.mu;
+peaks = [];
+for i = 1:length(smoothD),
+    if smoothD(i) > pd.mu,
+        peaks = [peaks, smoothD(i)];
+    end
+end
+
+pd = fitdist(peaks','Normal');
+
+highThresh = max(pd.mu - pd.sigma, lowThresh);
 
 end
