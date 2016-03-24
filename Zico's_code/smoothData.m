@@ -2,7 +2,7 @@
 %%
 % Example smoothCh1 = smoothData(ch1, 1,'tLocationScale');
 %%
-function smoothD, time, highThresh, lowThresh = smoothData(data, timeArr, stdvsFactor, distributionName)
+function [smoothD, time, highThresh, lowThresh] = smoothData(data, timeArr, stdvsFactor, distributionName)
 
 %%% http://www.mathworks.com/help/stats/fitdist.html#inputarg_distname
 pd = fitdist(diff(data),distributionName);
@@ -16,8 +16,8 @@ for i = 1:length(data) - 1,
    end
 end
 
-pd = fitdist(diff(smoothD),'Normal');
+pd = fitdist(smoothD,'Normal');
 highThresh = pd.mu + pd.sigma;
-lowThres = pd.mu - pd.sigma
+lowThresh = pd.mu - pd.sigma;
 
 end
