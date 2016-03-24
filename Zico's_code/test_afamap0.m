@@ -1,8 +1,8 @@
 % Input
 % T - num timesteps
-% n - number of 
-% k - number of 
-% p - number of 
+% n - number of dimensions of each states. example: a state: [1,2,1] which is a 3 dimensional state.
+% k - number of HMMs
+% p - number of states for each HMM. Gets turned into an array of size k with p values for every element.
 % seed-  random seed for same result testing
 % Output
 % map_se - Squared error of map approach (this is 0, kinda pointless for testing approximations)
@@ -28,6 +28,13 @@ for i=1:k,
   P{i}(1,end) = rand;
   P{i} = P{i}*spdiags(1./full(sum(P{i})'), 0, p(i), p(i));
 end
+
+
+mu  %RRRRR
+P  %RRRRR
+size(mu) %RRRRR
+size(P) %RRRRR
+return %RRRRR
 
 % random samples
 clear X;

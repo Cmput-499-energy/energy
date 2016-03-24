@@ -1,9 +1,9 @@
 folds = 20;
 ci_f = tinv(0.975, folds);
 T = 500;
-n = 4;
+n = 4; %dim of states
 N = 4;
-m = 4;
+m = 3; %number of states
 
 
 % varying # of HMMs
@@ -12,8 +12,10 @@ for N0 = 2:10,
   for i=1:folds,
     disp([num2str(N0) ' ' num2str(i)]);
     [res{N0}{i,:}] = test_afamap0(T, n, N0, m, i);
+    return %RRRRR
   end
 end
+return %RRRRR
 save results.mat;
 
 
