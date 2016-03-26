@@ -11,8 +11,8 @@ time = [];
 smoothD = [];
 for i = 1:length(data) - 1,
    if abs(data(i) - data(i+1)) > stdvsFactor*pd.sigma,
-       smoothD = [smoothD, data(i)];
-       time = [time, timeArr(i)];
+         smoothD = [smoothD, data(i), data(i+1)];
+         time = [time, timeArr(i), timeArr(i+1)];
    end
 end
 
