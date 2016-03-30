@@ -1,0 +1,5 @@
+Experiments:
+
+Params1.mat: Trained with all 18 appliances. House number 1. Used the unofficial sum of the channels as the observation signal. For smoothing, used normal distribution with 0.7 standard deviation.
+
+Params2.mat: Trained with channels:[3,4,5,6,7]. House number 1. Everything else same as Params1.mat experiment.

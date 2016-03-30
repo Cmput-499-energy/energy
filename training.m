@@ -1,15 +1,22 @@
-function [Params]=training(house_data)
+function [Params]=training(house_data, channels)
+    
+    %example:
+    %  data=loadData();
+    %  Params=training(data.house(1),[3: data.house(1).numChannels])
+    %
+    %
+
 	sum_data=0;
 	loads={};
 	state_data={};
     states=[0,1]; %changed states as it creates conflicts with MLE functions(doesnt accept 0 as a state);
-    no_chains=house_data.numChannels - 2;
+    no_chains=length(channels);
     isNoisy=false;
     laplacian_coefficient=1;
 
 	[contiguous_blocks, timePoints]=extract_contiguousTime(house_data.channel(3).time);
 
-	for i=3:house_data.numChannels
+	for i=channels
 		sum_data= sum_data+house_data.channel(i).load;
 		x=house_data.channel(i).load;
 	    [smoothed_data, t, h_thresh, l_thresh]=smoothData(x, timePoints, 0.7,'normal');
