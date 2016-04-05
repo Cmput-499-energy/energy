@@ -1,4 +1,4 @@
-function [states] = SDP_inference1(data,Params,t,m,n) 
+function [] = SDP_inference1(data,Params,t,m,n) 
 
 %This solution relies on x (column vector) having size of 2*m which is each x denotes the states of each appliances over 2 timesteps. M=x*x'
 %Number of variables in terms of x = n*2m*(t-1)
@@ -43,7 +43,10 @@ cvx_begin
 			n_str=num2str(i);
 			M_str=strcat('M',n_str,'_',t_str);
 			x_str=strcat('x',n_str,'_',t_str);
-
+			if j>1
+				x_prev_str=strcat('x',n_str,'_',num2str(j-1));
+				M_prev_str=strcat('M',n_str,'_',num2str(j-1));
+			end
 			
 			if first_TIME == true
 				log_A{i} = log(Params.transition_P{i});
@@ -73,6 +76,11 @@ cvx_begin
 				eval(strcat('offdiagonal.*',M_str,'(1:m,1:m)==0'));
 				eval(strcat('offdiagonal.*',M_str,'(1+m:2*m,1+m:2*m)==0'));
 
+				if j>1
+					eval(strcat(x_prev_str,'(m+1:2*m) == ',x_str,'(1:m)'));
+					eval(strcat('d_prev=diag(',M_prev_str,')'));
+					d_prev(m+1:2*m) == d(1:m);
+				end
 
 				eval(strcat('agg',t_str,'=','agg',t_str,'+mu{i}*x',n_str,'_',t_str,'(1:m)')); %this basically means aggi=rep_A(i,:)*xi where i is the number
 				% strcat('agg',t_str,'=','agg',t_str,'+mu{i}*x',n_str,'_',t_str,'(1:m)') %this basically means aggi=rep_A(i,:)*xi where i is the number
@@ -103,7 +111,7 @@ cvx_begin
 	toc
 
 	tic
-	first_term= 0.5*sum_t*((y-aggregate_hat).^2 * Params.Obs_COV^-1); %First term of Obj function of exact MAP. For 1D observation. Need to change for vector observation
+	first_term= 0.5*sum_t*((y-aggregate_hat).^2 * (Params.Obs_COV^-1)); %First term of Obj function of exact MAP. For 1D observation. Need to change for vector observation
 	toc
 
 	expression second_term;
@@ -146,4 +154,20 @@ cvx_begin
 
 cvx_end
 
+
+inferred_variables_x={};
+inferred_variables_M={};
+
+for j=1:t-1
+	t_str=num2str(j);
+	for i=1:n 
+		n_str=num2str(i);
+		M_str=strcat('M',n_str,'_',t_str);
+		x_str=strcat('x',n_str,'_',t_str);
+		eval(strcat('inferred_variables_x{i,j}=',x_str,';'));
+		eval(strcat('inferred_variables_M{i,j}=',M_str,';'));
+	end
+end
+
+save('Inferred_variables.mat', 'inferred_variables_x','inferred_variables_M');
 
