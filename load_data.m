@@ -1,4 +1,4 @@
-function [ data ] = load_data()
+function [ data ] = load_data(data_location)
 %LOAD_DATA Loads the low frequency data from 
 %   Loads the data into a structure matching the ones bellow
 % data = struct('numHouses', 0, 'house',[]);
@@ -8,7 +8,8 @@ function [ data ] = load_data()
     for i = 1:6
         % For debuging purposes can be removed
         disp(['loading house ', num2str(i), '...'])
-        base = 'low_freq/';
+%         base = 'low_freq/';
+        base=data_location;
         house = struct('numChannels', 0, 'channel', [], 'name', '');
         house.name = strcat('house_', num2str(i));
         directory = dir(strcat(base, house.name, '/'));

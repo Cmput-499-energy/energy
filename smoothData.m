@@ -7,14 +7,20 @@ function [smoothD, time, highThresh, lowThresh] = smoothData(data, timeArr, stdv
 %%% http://www.mathworks.com/help/stats/fitdist.html#inputarg_distname
 pd = fitdist(diff(data),distributionName);
 
-time = [];
-smoothD = [];
-for i = 1:length(data) - 1,
-   if abs(data(i) - data(i+1)) > stdvsFactor*pd.sigma,
+time = [timeArr(1)];
+smoothD = [data(1)];
+
+currentVal = data(1);
+for i = 2:2:length(data) - 1,
+   if abs(data(i) - data(i+1)) > stdvsFactor*pd.sigma || abs(currentVal - data(i+1)) > stdvsFactor*pd.sigma,
          smoothD = [smoothD, data(i), data(i+1)];
          time = [time, timeArr(i), timeArr(i+1)];
+         currentVal = data(i+1);
    end
 end
+smoothD = [smoothD, data(end)];
+time = [time, timeArr(end)];
+
 
 pd = fitdist(smoothD','Normal');
 lowThresh = pd.mu;
