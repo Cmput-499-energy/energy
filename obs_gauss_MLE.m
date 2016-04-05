@@ -47,6 +47,7 @@ function [MU, COV, noiseParam]= obs_gauss_MLE(no_chains, data, state_data, state
 		for j=states
 			indices= chain_states==j;
 			state_D=chain_data(indices);
+			% size(state_D)
 			mu=mean(state_D, 2);
 			j_ind=find(states==j);
 			MU{i}(j_ind) = mu;

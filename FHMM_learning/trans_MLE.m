@@ -1,4 +1,4 @@
-function [T_probs, priors] = trans_MLE(no_chains, data, timePoints, states, contiguous_blocks, laplacian_coefficient)
+function [T_probs, priors] = trans_MLE(no_chains, data, states, contiguous_blocks, laplacian_coefficient)
 
 	%
 	% 	Author: Touqir Sajed    
@@ -11,9 +11,7 @@ function [T_probs, priors] = trans_MLE(no_chains, data, timePoints, states, cont
 	%
 	% no_chains: number of chains of the FHMM. In our case it is the number of appliances
 	%
-	% data: a cell containing 'n' data_array where 'n'=no_chains. Each data_array is a 1*m matrix where m is the number of time points or samples.
-	%
-	% timePoints: a 1D row matrix that contains all those time points that our MLE algorithm will be using for learning the transition probabilities. 
+	% data: a cell containing 'n' data_array where 'n'=no_chains. Each data_array is a 1*m matrix where m is the number of time points or samples. Discrete numbers.
 	%
 	% states: a cell containing 'n' state_array where n=no_chains and 'state_array' is a 1D row matrix containing the different states 
 	% 		  by integers.
@@ -41,8 +39,8 @@ function [T_probs, priors] = trans_MLE(no_chains, data, timePoints, states, cont
 		totalPoints=totalPoints+length(start_t:end_t);
 
 		for j=1:no_chains
-			ts=timePoints(start_t:end_t);
-			X = data{j}(ts);
+			% ts=timePoints(start_t:end_t);
+			X = data{j}(start_t:end_t);
 			contiguous_data{i,j} = X; 
 		end
 	end

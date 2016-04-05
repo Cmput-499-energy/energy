@@ -1,4 +1,4 @@
-function [total_agg, aggregate_data, aggregate_data2, estimated_aggregate_data]=calc_aggregate_difference(house_data)
+function [total_agg, aggregate_data, aggregate_data2, estimated_aggregate_data]=calc_aggregate_difference(house_data,channels)
 	
 	aggregate_data=[house_data.channel(1).time, house_data.channel(1).load];
     aggregate_data2=[house_data.channel(2).time, house_data.channel(2).load];

@@ -9,10 +9,11 @@ function trans_MLE_test
 	%
 	%
 
-	laplacian_coefficient=0.001;
-
-	states=[4,1,2,3];
-	data_1=[1,1,1,2,1,2,2,2,2];
+	% laplacian_coefficient=0.001;
+	laplacian_coefficient=0;
+	% states=[4,1,2,3];
+	states=[0,1];
+	data_1=[0,1,1,1,0,1,1,0];
 	% timepoints=1:length(data_1);
 	% no_chains=1;
 	data{1}=data_1;
@@ -37,8 +38,9 @@ function trans_MLE_test
 
 
 	timepoints=[1,2,3,6,7,8];
-	data_2=[1,2,2,3,2,1,2,3,1];
+	data_2=[1,0,0,1,1,1,1,0];
 	data{2}=data_2;
+	% contiguous_blocks=[1,3; 4,6];
 	contiguous_blocks=[1,3; 4,6];
 	no_chains=2;
 	[probs,priors]=trans_MLE(no_chains, data, timepoints, states, contiguous_blocks, laplacian_coefficient);
