@@ -6,7 +6,7 @@ function [] = make_boxplot( house )
 % channel = struct('name', '', 'dim', 0, 'time', [], 'load', [], 'label','');
     subplot(1,house.numChannels,[1,2])
     loads = [house.channel(1).load house.channel(2).load];
-    labels = [house.channel(1).label house.channel(2).label];
+    labels = [house.channel(1).label; house.channel(2).label];
     boxplot(loads, 'Labels', labels, 'labelorientation','inline');
     title([house.name, ' mains']);
     subplot(1,house.numChannels,3:house.numChannels);

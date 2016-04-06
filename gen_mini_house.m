@@ -5,10 +5,10 @@ if nargin > 2
     rng(seed);
 end
 house = struct('numChannels', 0, 'channel', [], 'name', '');
-agr = orig_house.channel(3)
+agr = orig_house.channel(3);
 agr.load = agr.load * 0;
 agr.label = 'mains';
-agr.name = 'man_channel_1.dat';
+agr.name = 'min_channel_1.dat';
 order = randperm(orig_house.numChannels-2)+2;
 order = order(1:num_channels);
 for c = order
