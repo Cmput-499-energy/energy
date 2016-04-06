@@ -1,4 +1,3 @@
-
 %%
 % Example smoothCh1 = smoothData(ch1, 1,'tLocationScale');
 %%
@@ -12,11 +11,17 @@ smoothD = [data(1)];
 
 currentVal = data(1);
 for i = 2:2:length(data) - 1,
-   if abs(data(i) - data(i+1)) > stdvsFactor*pd.sigma || abs(currentVal - data(i+1)) > stdvsFactor*pd.sigma,
-         smoothD = [smoothD, data(i), data(i+1)];
-         time = [time, timeArr(i), timeArr(i+1)];
-         currentVal = data(i+1);
+   if abs(currentVal - data(i+1)) > stdvsFactor*pd.sigma,
+         if time(end) == timeArr(i-1)
+            smoothD = [smoothD, data(i), data(i+1)];
+            time = [time, timeArr(i), timeArr(i+1)];            
+         else
+            smoothD = [smoothD, smoothD(end), data(i), data(i+1)];
+            time = [time, timeArr(i-1), timeArr(i), timeArr(i+1)]; 
+         end
+         currentVal = data(i+1);    
    end
+   currentVal = data(i+1);
 end
 smoothD = [smoothD, data(end)];
 time = [time, timeArr(end)];
