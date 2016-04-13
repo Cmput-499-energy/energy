@@ -1,4 +1,4 @@
-function X = runExact(Ybar, Params)
+function X = statesFromExact(Ybar, Params)
 
 params.max_iter = 1;
 params.lambda = Inf;
