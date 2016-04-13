@@ -1,4 +1,4 @@
-function [states]= run_SDP_approximation(Params,Y,t,n)
+function [states, x_vars, M_vars, errors]= run_SDP_approximation(Params,Y,t,n)
 
 	m=2; %by default 2 states
 	frequency=100;
@@ -11,5 +11,5 @@ function [states]= run_SDP_approximation(Params,Y,t,n)
 		errors{i}=error_;
 	end
 
-	save('SDP_prediction.mat', states, x_vars, M_vars, errors);	
+	%save('SDP_prediction.mat', states, x_vars, M_vars, errors);	
 end
