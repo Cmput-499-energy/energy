@@ -10,11 +10,18 @@ m=2;
 for i=1:n
 	for j=1:t
 		if j<t
+			% if i==2 && j==16
+			% 	x_var{i,j}(1)
+			% 	squash(x_var{i,j}(1))
+			% 	x_var{i,j}(2)
+			% 	squash(x_var{i,j}(2))
+			% end
+
 			x_var{i,j}(1) = squash(x_var{i,j}(1));
 			x_var{i,j}(2) = squash(x_var{i,j}(2));
 		else
-			x_var{i,j}(3) = squash(x_var{i,j}(3));
-			x_var{i,j}(4) = squash(x_var{i,j}(4));			
+			x_var{i,t-1}(3) = squash(x_var{i,t-1}(3));
+			x_var{i,t-1}(4) = squash(x_var{i,t-1}(4));			
 		end
 	end
 	Params.transition_P{i} = -log(Params.transition_P{i});
@@ -32,22 +39,24 @@ for f=1:frequency
 			if j<t
 				p=[x_var{i,j}(1), x_var{i,j}(2)];
 			else
-				p=[x_var{i,j}(3), x_var{i,j}(4)];
+				p=[x_var{i,t-1}(3), x_var{i,t-1}(4)];
 			end
+			% i,j,p
 			state=find(mnrnd(1,p)==1);
+			% state
 			state_matrix(i,j)=state;
 
 			if j>1
-				if prev_state==1 and state==1
+				if prev_state==1 && state==1
 					transition_matrix(m*(i-1)+1, m*(j-2)+1)=1;
 				end
-				if prev_state==1 and state==2
+				if prev_state==1 && state==2
 					transition_matrix(m*(i-1)+1, m*(j-1))=1;
 				end
-				if prev_state==2 and state==1
+				if prev_state==2 && state==1
 					transition_matrix(m*i, m*(j-2)+1)=1;
 				end
-				if prev_state==2 and state==2
+				if prev_state==2 && state==2
 					transition_matrix(m*i, m*(j-1))=1;
 				end
 			end
@@ -87,7 +96,7 @@ function [f_value] = objective(states, transition_matrix, t, n, m, Params, aggre
 
 
 	for i=1:n
-		A=repmat(Params.transition_P{i}, 1, t);
+		A=repmat(Params.transition_P{i}, 1, t-1);
 		index=m*(i-1)+1:m*(i);
 		T_M_vec=reshape(transition_matrix(index, :), 1, numel(transition_matrix(index, :)));
 		error_2 = error_2 + dot(A(:), T_M_vec);
@@ -100,14 +109,18 @@ end
 
 function [value] = squash(x)
 	value=0;
-	tolerance=10^-4;
+	tolerance=10^-3;
 	if x>0.5
 		if 1-x < tolerance % if x is within the threshold value of 1
 			value=1;
+		else
+			value=x;
 		end
 	else
 		if x<tolerance %if x is within the threshold value of 0
 			value=0;
+		else
+			value=x;
 		end
 	end
 end

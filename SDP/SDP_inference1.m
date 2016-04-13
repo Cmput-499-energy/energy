@@ -1,4 +1,4 @@
-function [] = SDP_inference1(data,Params,t,m,n) 
+function [x_var, M_var, errors] = SDP_inference1(data,Params,t,m,n) 
 
 %This solution relies on x (column vector) having size of 2*m which is each x denotes the states of each appliances over 2 timesteps. M=x*x'
 %Number of variables in terms of x = n*2m*(t-1)
@@ -58,7 +58,8 @@ cvx_begin
 				eval(strcat('sum_m*',x_str,'(m+1:2*m)==1')); %summation of state indicator variables for each appliance for next time period is 1.
 				eval(strcat(x_str,'(:)>=0')); %constraint that all entries of x vectors must be positive eg greater/equal than 0
 				eval(strcat(str1,n_str,'_',t_str, str2)); %creates the Mn_t PSD matrices
-				eval(strcat(M_str,'(:)>=0'));
+				% eval(strcat(M_str,'(:)>=0'));
+
 				% strcat(str3,n_str,'_',t_str, str4) %creates the xn_t vectors
 				% strcat('sum_m*',x_str,'(1:m)==1') %summation of state indicator variables for each appliance for previous time period is 1.
 				% strcat('sum_m*',x_str,'(m+1:2*m)==1') %summation of state indicator variables for each appliance for next time period is 1.
@@ -84,13 +85,15 @@ cvx_begin
 
 				eval(strcat('agg',t_str,'=','agg',t_str,'+mu{i}*x',n_str,'_',t_str,'(1:m)')); %this basically means aggi=rep_A(i,:)*xi where i is the number
 				% strcat('agg',t_str,'=','agg',t_str,'+mu{i}*x',n_str,'_',t_str,'(1:m)') %this basically means aggi=rep_A(i,:)*xi where i is the number
-				if i==1
-					s_str=strcat('s=',x_str); %one at a time constraint for x vectors.
-					s2_str=strcat('s2=','sum_m*diag(',M_str,'(1:m,1+m:2*m))'); %one at a time constraint for M matrices.					
-				else
-					s_str=strcat(s_str,'+',x_str); %one at a time constraint for x vectors.
-					s2_str=strcat(s2_str,'+sum_m*diag(',M_str,'(1:m,1+m:2*m))'); %one at a time constraint for M matrices.					
-				end
+				
+				% if i==1
+				% 	s_str=strcat('s=',x_str); %one at a time constraint for x vectors.
+				% 	s2_str=strcat('s2=','sum_m*diag(',M_str,'(1:m,1+m:2*m))'); %one at a time constraint for M matrices.					
+				% else
+				% 	s_str=strcat(s_str,'+',x_str); %one at a time constraint for x vectors.
+				% 	s2_str=strcat(s2_str,'+sum_m*diag(',M_str,'(1:m,1+m:2*m))'); %one at a time constraint for M matrices.					
+				% end
+
 			else
 				t_str=num2str(t-1);
 				strcat('agg',t_str,'=','agg',t_str,'+mu{i}*x',n_str,'_',t_str,'(1+m:2*m)'); %this basically means aggi=rep_A(i,:)*xi where i is the number
@@ -102,9 +105,11 @@ cvx_begin
 		first_term=false;
 		eval(s_str);
 		eval(s2_str);
-		sum_m*(s(1:m)-s(m+1:2*m))<=  1; %one at a time constraint for x vectors.
-		sum_m*(s(1:m)-s(m+1:2*m))>= -1; %one at a time constraint for x vectors.
-		s2>= n-1; %one at a time constraint for M matrices. 
+
+		% sum_m*(s(1:m)-s(m+1:2*m))<=  1; %one at a time constraint for x vectors.
+		% sum_m*(s(1:m)-s(m+1:2*m))>= -1; %one at a time constraint for x vectors.
+		% s2>= n-1; %one at a time constraint for M matrices. 
+
 		% eval(strcat('size(','agg',t_str,')'));
 		eval(strcat('aggregate_hat(j)=agg',t_str));
 	end
@@ -112,6 +117,7 @@ cvx_begin
 
 	tic
 	first_term= 0.5*sum_t*((y-aggregate_hat).^2 * (Params.Obs_COV^-1)); %First term of Obj function of exact MAP. For 1D observation. Need to change for vector observation
+	% first_term= 0.5*sum_t*((y-aggregate_hat).^2); %First term of Obj function of exact MAP. For 1D observation. Need to change for vector observation
 	toc
 
 	expression second_term;
@@ -127,7 +133,7 @@ cvx_begin
 		end
 	end
 
-	second_term_str
+	% second_term_str
 	eval(second_term_str); %second term of the exact MAP equation.
 	toc
 
@@ -154,6 +160,9 @@ cvx_begin
 
 cvx_end
 
+% second_term
+% first_term*Params.Obs_COV
+errors=[first_term+second_term,first_term,first_term*Params.Obs_COV, second_term];
 
 x_var={};
 M_var={};
@@ -169,5 +178,5 @@ for j=1:t-1
 	end
 end
 
-save('Inferred_variables.mat', 'x_var','M_var');
+% save('Inferred_variables.mat', 'x_var','M_var');
 
