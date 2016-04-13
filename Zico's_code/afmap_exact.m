@@ -9,9 +9,11 @@ siz = zeros(1,N);
 siz(1) = size(P{1},1);
 P0 = P{1};  
 mu0 = mu{1};
+
 for i=2:N,  
   siz(i) = size(P{i},1);
   %mask = kron(ones(siz(i)), eye(size(P0))) | kron(eye(siz(i)), ones(size(P0)));
+  
   P0 = kron(P{i}, P0);
   clear mu0_;
   for j=1:n,
@@ -20,8 +22,7 @@ for i=2:N,
   mu0 = mu0_;
 end
 
-size(mu0)
-size(params.Sig)
+
 
 ln_py = -0.5*sqdist(inv(sqrtm(params.Sig))*mu0, inv(sqrtm(params.Sig))*Y_bar);
 p0 = ones(size(mu0,2),1)/size(mu0,2);
