@@ -5,6 +5,11 @@ function d=sqdist(a,b)
 
 % NB: very fast implementation taken from Roland Bunschoten
 
-aa = sum(a.*a,1); bb = sum(b.*b,1); ab = a'*b; 
+aa = sum(a.*a,1);
+bb = sum(b.*b,1);
+size(a)
+size(b)
+ab = a'*b; 
+
 d = abs(repmat(aa',[1 size(bb,2)]) + repmat(bb,[size(aa,2) 1]) - 2*ab);
 

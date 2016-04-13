@@ -1,7 +1,7 @@
 function X1 = afmap_exact(Y_bar, mu, P,params)
   
 N = length(P);
-n = size(mu{1},1);  
+n = 1;  
 T = size(Y_bar,2);
 
 % form joint HMM
@@ -12,13 +12,16 @@ mu0 = mu{1};
 for i=2:N,  
   siz(i) = size(P{i},1);
   %mask = kron(ones(siz(i)), eye(size(P0))) | kron(eye(siz(i)), ones(size(P0)));
-  P0 = kron(P{i}, P0);%.*mask;
+  P0 = kron(P{i}, P0);
   clear mu0_;
   for j=1:n,
     mu0_(j,:) = log(kron(exp(mu{i}(j,:)), exp(mu0(j,:))));
   end
   mu0 = mu0_;
 end
+
+size(mu0)
+size(params.Sig)
 
 ln_py = -0.5*sqdist(inv(sqrtm(params.Sig))*mu0, inv(sqrtm(params.Sig))*Y_bar);
 p0 = ones(size(mu0,2),1)/size(mu0,2);

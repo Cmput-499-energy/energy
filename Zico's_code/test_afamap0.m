@@ -29,13 +29,6 @@ for i=1:k,
   P{i} = P{i}*spdiags(1./full(sum(P{i})'), 0, p(i), p(i));
 end
 
-
-mu  %RRRRR
-P  %RRRRR
-size(mu) %RRRRR
-size(P) %RRRRR
-return %RRRRR
-
 % random samples
 clear X;
 for i=1:k, 
@@ -75,6 +68,16 @@ X_afa_noadd = afamap(Y, mu, P, params);
 
 params.Sig = 0.01*eye(n);
 if (p(1)^k < 2000)
+  'size mu'
+  size(mu)
+  'mu{1}'
+  mu{1}
+  'size(P)'
+  size(P)
+  'P(1)'
+  P(1)
+  params
+  return
   X_exact = afmap_exact(Y, mu, P, params);
 else
   X_exact = cell(1,k); for i=1:k, X_exact{i} = nan*ones(size(X_afa{1})); end
