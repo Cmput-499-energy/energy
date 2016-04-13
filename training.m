@@ -2,7 +2,7 @@ function [Params]=training(house_data, channels, train_proportion)
     
     %example:
     %  data=loadData();
-    %  Params=training(data.house(1),[3: data.house(1).numChannels])
+    %  Params=training(data.house(1),[3: data.house(1).numChannels],0.8)
     %
     %
 
