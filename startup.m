@@ -5,3 +5,4 @@ addpath(strcat(dir, '/learnt_parameters/'));
 addpath(strcat(dir, '/SDP/'));
 addpath(strcat(dir, '/test_data/'));
 addpath(strcat(dir, '/quick_codes/'));
+addpath(strcat(dir, '/Inferred_variables/'));
