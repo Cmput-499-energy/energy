@@ -4,8 +4,8 @@ function [states, x_vars, M_vars, errors]= run_SDP_approximation(Params,Y,t,n)
 	frequency=100;
 
 	for i=1:length(Y)
-		[X,M,error_]=SDP_inference1((Y{i}.loads) ,Params,t,m,n);
-		states{i}=state_sampler(X,M,frequency,t,n,Params, (Y{i}.loads));
+		[X,M,error_]=SDP_inference1(Y{i}.loads(1:t) ,Params,t,m,n);
+		states{i}=state_sampler(X,M,frequency,t,n,Params, Y{i}.loads(1:t));
 		x_vars{i}=X;
 		M_vars{i}=M;
 		errors{i}=error_;

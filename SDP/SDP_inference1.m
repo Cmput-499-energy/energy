@@ -58,7 +58,8 @@ cvx_begin
 				eval(strcat('sum_m*',x_str,'(m+1:2*m)==1')); %summation of state indicator variables for each appliance for next time period is 1.
 				eval(strcat(x_str,'(:)>=0')); %constraint that all entries of x vectors must be positive eg greater/equal than 0
 				eval(strcat(str1,n_str,'_',t_str, str2)); %creates the Mn_t PSD matrices
-				% eval(strcat(M_str,'(:)>=0'));
+				eval(strcat(M_str,'(:)>=0'));
+				% eval(strcat(M_str,'(1:m,m+1:2*m)>=0'));
 
 				% strcat(str3,n_str,'_',t_str, str4) %creates the xn_t vectors
 				% strcat('sum_m*',x_str,'(1:m)==1') %summation of state indicator variables for each appliance for previous time period is 1.
@@ -110,7 +111,6 @@ cvx_begin
 		% sum_m*(s(1:m)-s(m+1:2*m))>= -1; %one at a time constraint for x vectors.
 		% s2>= n-1; %one at a time constraint for M matrices. 
 
-		% eval(strcat('size(','agg',t_str,')'));
 		eval(strcat('aggregate_hat(j)=agg',t_str));
 	end
 	toc
@@ -160,8 +160,8 @@ cvx_begin
 
 cvx_end
 
-% second_term
-% first_term*Params.Obs_COV
+second_term
+first_term*Params.Obs_COV
 errors=[first_term+second_term,first_term,first_term*Params.Obs_COV, second_term];
 
 x_var={};
